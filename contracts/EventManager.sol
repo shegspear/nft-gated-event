@@ -11,6 +11,7 @@ contract EventManager {
     error NotEligible();
     error NotOwner();
     error AlreadyCreatedEvent();
+    error HasAlreadyBeenUpdated();
 
     event EventCompleted(address eventAddress);
     event EventLogged();
@@ -54,7 +55,7 @@ contract EventManager {
 
     // function acquire NFT  
 
-    function updateEvent(address _event) external {
+    function updateEvent(address _eventId) external {
 
         if(msg.sender == address(0)) {
             revert AddressZeroDetected();
@@ -64,7 +65,12 @@ contract EventManager {
             revert NotOwner();
         }
 
-        EventRequest storage eventRequest = ledger[_event];
+        EventRequest storage eventRequest = ledger[_eventId];
+
+        if(eventRequest.completed) {
+            revert HasAlreadyBeenUpdated();
+        }
+
         eventRequest.completed = true;
 
         emit EventCompleted(eventRequest.sender);
