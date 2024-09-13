@@ -8,6 +8,8 @@ contract EventManager {
     error AddressZeroDetected();
     error NotOwner();
 
+    event EventCompleted(address eventAddress);
+
     constructor() {
         owner = msg.sender;
     }
@@ -30,6 +32,14 @@ contract EventManager {
 
     }
 
-    function
+    function updateEvent(address _event) external {
+        if(msg.sender != owner) {
+            revert NotOwner();
+        }
+
+        EventRequest storage eventRequest = ledger[_event];
+        eventRequest.completed = true;
+
+    } 
 
 }
