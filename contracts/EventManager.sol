@@ -19,6 +19,7 @@ contract EventManager {
     address myNFT = 0xa1200731B4Ae09e3DFeC1cEA7BFAEFB65F2e4E71; // not tested 
 
     constructor() {
+        require(msg.sender != address(0), "Village peopl!!");
         owner = msg.sender;
     }
 
